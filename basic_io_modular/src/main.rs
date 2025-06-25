@@ -2,7 +2,11 @@ use std::fs::{File, OpenOptions, remove_file};
 use std::io;
 use std::io::{BufRead, BufReader, Write};
 use std::env;
+use console::style; // For colored output (optional, can be removed if not needed)
 
+fn clear_screen() {
+    print!("\x1B[2J\x1B[1;1H");
+}
 fn read_file_1(filename: &String) -> io::Result<()> {
     // File exists, ask user what to do
     let mut current_dir = env::current_dir()?;
@@ -11,11 +15,12 @@ fn read_file_1(filename: &String) -> io::Result<()> {
     let file = File::open(current_dir)?; // Open the file
     let reader = BufReader::new(file);
 
-    println!("\n--- File Content ---");
+    println!("\n--- Beginning of File ---\n\n");
     for line_result in reader.lines() {
         let line = line_result?;
         println!("{}", line);
     }
+    println!("\n\n--- End of File ---");
     Ok(())
 }
 fn append_to_file_1(filename: &String) -> io::Result<()> {
@@ -105,11 +110,12 @@ fn main() -> io::Result<()> {
     // The actual main function is defined above
     println!("Welcome to the Basic File Manager!");
     loop {
-        println!("Type 'Q' to quit at any time.");
-        println!("Type 'C' to create a new file.");
-        println!("Type 'R' to read an existing file.");
-        println!("Type 'E' to edit an existing file.");
-        println!("Type 'D' to delete an existing file.");
+        clear_screen(); // Clear the screen for a fresh start
+        println!("Type {} to quit at any time.", style("'Q'").bold().red());
+        println!("Type {} to create a new file.", style("'R'").bold().green());
+        println!("Type {} to read an existing file.", style("'C'").bold().yellow());
+        println!("Type {} to edit an existing file.", style("'E'").bold().blue());
+        println!("Type {} to delete an existing file.", style("'D'").bold().magenta());
         println!("Enter your choice:");
         let my_char = get_user_input()?;
         if let Some(first_char) = my_char.chars().next() {
