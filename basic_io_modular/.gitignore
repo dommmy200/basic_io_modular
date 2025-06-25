@@ -2,3 +2,8 @@ target/
 .vscode/
 doc/
 coverage/
+.cargo/
+.cargo-cache/
+.DS_Store
+Thumbs.db
+*.log
